@@ -52,7 +52,9 @@ public class BasePage {
 
     public void doubleClickElement(WebElement element) {
         getWait(DEFAULT_TIMEOUT).until(d -> {
-            new Actions(getDriver()).doubleClick(element).perform();
+            JavascriptExecutor js = (JavascriptExecutor) getDriver();
+            js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+            js.executeScript("var evt = new MouseEvent('dblclick', {bubbles: true, cancelable: true, view: window}); arguments[0].dispatchEvent(evt);", element);
             return true;
         });
     }
@@ -101,9 +103,12 @@ public class BasePage {
     public void setSliderValue(WebElement element, String value) {
         getWait(DEFAULT_TIMEOUT).until(d -> {
             JavascriptExecutor js = (JavascriptExecutor) getDriver();
+            js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+            
             js.executeScript(
                 "var input = arguments[0];" +
                 "var val = arguments[1];" +
+                "input.focus();" + 
                 "var nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;" +
                 "if (nativeInputValueSetter) {" +
                 "    nativeInputValueSetter.call(input, val);" +
