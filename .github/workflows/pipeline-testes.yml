@@ -28,7 +28,7 @@ jobs:
           cache: maven
 
       - name: 🚀 Executar Testes (Maven)
-        run: mvn clean test
+        run: mvn clean test cluecumber-report:reporting
 
       - name: ⚙️ Setup do GitHub Pages
         uses: actions/configure-pages@v5
